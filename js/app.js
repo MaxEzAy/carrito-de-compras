@@ -3,6 +3,7 @@ const carrito = document.querySelector('#carrito');
 const contenedorCarrito = document.querySelector('#lista-carrito tbody');
 const vaciarCarritoBtm = document.querySelector('#vaciar-carrito');
 const listaCursos = document.querySelector('#lista-cursos');
+let articulosCarrito = [];
 
 cargarEventListeners();
 function cargarEventListeners() {
@@ -22,7 +23,7 @@ function agregarCurso(e) {
 }
 
 function leerDatosCurso(curso) {
-    console.log(curso);
+    // console.log(curso);
 
     const infoCurso = {
         imagen: curso.querySelector('img').src,
@@ -31,5 +32,39 @@ function leerDatosCurso(curso) {
         id: curso.querySelector('a').getAttribute('data-id'),
         cantidad: 1
     }
-    console.log(infoCurso);
+    
+    // Agregamos los elementos al arreglo del carrito
+    articulosCarrito = [...articulosCarrito, infoCurso];
+
+    console.log(articulosCarrito);
+
+    carritoHTML();
+}
+
+// Mostrar el Carrito de compras en el HTML
+function carritoHTML() {
+
+    // Limpiar el HTML
+    limpiarHTML();
+
+    // Recorre el carrito y genera el HTML
+    articulosCarrito.forEach( curso => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                ${curso.titulo}
+            </td>
+        `;
+
+        // Agregar el HTML del carrito en el tbody
+        contenedorCarrito.appendChild(row);
+    })
+}
+
+// Elimina los cursos del tbody
+function limpiarHTML() {
+
+    while (contenedorCarrito.firstChild) {
+        contenedorCarrito.removeChild(contenedorCarrito.firstChild);
+    }
 }
